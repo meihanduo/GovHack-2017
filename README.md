@@ -22,7 +22,10 @@ Rstudio
 
 
 Datasets and other relevant information used:
+
 -HERE APIs to extract geocodic information
+
 -Open Transport NSW TTDS data
+
 -
 
