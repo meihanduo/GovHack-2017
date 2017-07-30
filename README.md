@@ -14,14 +14,6 @@ Interventions to reduce traffic volume may focus on increasing the number or siz
 **Our next steps**
 Our model serves as a proof of concept of a visual model for representing roads in Sydney. We originally hoped to model at the level of individual intersections, but this was not possible with the available data. With further support and collaboration, we can build a more granular and accurate model that will allow us to identify roads most at risk of overcrowding and congestion, and allow government to proactively plan infrastructure and educate the public.
 
-**We then want to paint a picture of what congestion COULD look like if we:**
-
-  * Invest in infrastructure
-  
-  * Invest in public transport
-  
-  * Encourage changes to the 'future of work'
-
 ## Technical information
 
 This repository contains:
