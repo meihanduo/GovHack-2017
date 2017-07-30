@@ -39,6 +39,10 @@ The repository contains:
   * Open Transport NSW TTDS data
 
   * http://stat.abs.gov.au/itt/r.jsp?databyregion#/
+  
+  * https://opendata.transport.nsw.gov.au/dataset/employment-projections
+  
+  * https://opendata.transport.nsw.gov.au/dataset/opal-tap-on-and-tap-off
 
 
 
