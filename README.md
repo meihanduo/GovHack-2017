@@ -33,6 +33,8 @@ This repository contains:
   * Tableau 10.3
 
   * RStudio
+  
+  * Microsoft Visual Studio Community Edition 2017
 
 **Datasets and other relevant information used:**
 
