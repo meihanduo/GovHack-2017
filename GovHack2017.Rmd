@@ -1,0 +1,369 @@
+---
+title: "MainMarkdown"
+output: html_document
+---
+# library
+```{r}
+library(dplyr)
+library(plyr)
+library(ggplot2)
+library(geojsonio)
+library(leaflet)
+library(lubridate)
+library(GGally)
+library(reshape)
+
+```
+
+# Load data
+## Postcode Boundary
+```{r}
+PostcodeBoundary <- geojsonio::geojson_read("postcodeboundary.json",what="sp")
+
+# Or use the rgdal equivalent:
+# nycounties <- rgdal::readOGR("json/nycounties.geojson", "OGRGeoJSON")
+
+pal <- colorNumeric("viridis", NULL)
+
+leaflet(PostcodeBoundary) %>%
+  addTiles() %>%
+  addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1,
+    fillColor = ~pal(log10(pop)),
+    label = ~paste0(county, ": ", formatC(pop, big.mark = ","))) %>%
+  addLegend(pal = pal, values = ~log10(pop), opacity = 1.0,
+    labFormat = labelFormat(transform = function(x) round(10^x)))
+```
+## Ecodata
+```{r}
+ecodata <- read.csv("Ecodata.csv",header=TRUE)
+```
+## Bus speed
+```{r}
+busspeed <- read.csv("busspeed.csv",header = TRUE)
+busspeed <- plyr::rename(busspeed,c("vLon_WGS84"="Lon",
+                                    "vLat_WGS84"="Lat",
+                                    "vBearing_DEG"="DEG",
+                                    "vSpeed_KPH"="Speed",
+                                    "reSpeedLimit_KPH"="SpeedLimit"))
+busspeed$Lat <- round(busspeed$Lat,digits = 5)
+busspeed$Lon <- round(busspeed$Lon,digits = 5)
+
+rm <- ymd_hms(busspeed$PositionTime_UTC)
+busspeed$Year <- format(rm,"%Y")
+busspeed$Month <- format(rm,"%m")
+busspeed$Day <- format(rm,"%d")
+busspeed$Hour <- hour(rm)
+busspeed$Mins <- minute(rm)
+busspeed$Second <- second(rm)
+busspeed$PercentageSpeed <- busspeed$Speed/busspeed$SpeedLimit
+
+street115 <- busspeed %>% filter(SpeedLimit == 115)
+street95 <- busspeed %>% filter(SpeedLimit == 95)
+street80 <- busspeed %>% filter(SpeedLimit == 80)
+street60 <- busspeed %>% filter(SpeedLimit == 60)
+street40 <- busspeed %>% filter(SpeedLimit == 40)
+street20 <- busspeed %>% filter(SpeedLimit == 20)
+street10 <- busspeed %>% filter(SpeedLimit == 10)
+street0 <- busspeed %>% filter(SpeedLimit == 0)
+
+CountOfCoord <- busspeed %>% 
+  dplyr::group_by(Lat,Lon) %>% 
+  dplyr::summarise(n=n())
+```
+# demo
+```{r}
+summaryall <- busspeed %>% 
+  dplyr::filter(Lat != 0) %>% 
+  dplyr::mutate(SpeedLimit = as.factor(SpeedLimit)) %>% 
+  dplyr::group_by(Hour,SpeedLimit) %>% 
+  dplyr::summarise(n=n(),x=mean(PercentageSpeed)) %>% 
+  ggplot(aes(x=Hour,y=x,color=SpeedLimit)) +
+  geom_line() +
+  scale_x_continuous(limits = c(0,24),breaks = seq(0,24,2)) +
+  scale_y_continuous(limits = c(0.00,1.00),breaks = seq(0.00,1.00,0.10)) +
+  theme_classic() +
+  labs(title="Average Speed in 24 Hours") +
+  xlab("Hours") + ylab("Speed, KPH") 
+
+  
+```
+# Eco data set
+```{r}
+ParCoord <- ecodata %>%
+  dplyr::mutate(Income.year = as.factor(Income.year)) %>% 
+  ggparcoord(columns = c(18:38),groupColumn = 2,scale = "globalminmax", missing = "exclude",alphaLines = 0.1) +
+  theme_classic() +
+  xlab(" ") +ylab("") +
+  labs(title="Economics")
+```
+
+
+```{r}
+street10 %>% 
+  dplyr::group_by(Hour) %>% 
+  dplyr::summarise(n=n())
+
+
+InPlot <- leaflet(busspeed) %>%
+  addProviderTiles("CartoDB.DarkMatter") %>%
+  addCircles(data = busspeed, lng = ~Lon, lat = ~Lat,
+             weight = 1, radius = ~ Speed/SpeedLimit)
+
+```
+
+
+# Plot the postcode boundary
+```{r}
+leaflet(PostcodeBoundary) %>% 
+  addTiles() %>% 
+  addPolygons(stroke=FALSE,smoothFactor=0.3)
+
+
+
+```
+# Visualizationn
+```{r}
+library(ggplot2)
+```
+
+```{r}
+top20countries <- gtclean %>% 
+  select(country_txt) %>% 
+  group_by(country_txt) %>% 
+  summarise(n=n()) %>% 
+  arrange(desc(n)) %>% 
+  as.data.frame()
+
+rm <- busspeed %>% 
+  filter(imonth != 0) %>% 
+  filter(country_txt %in% top20countries[1:20,1]) %>% 
+  select(Country=country_txt,imonth,iyear) %>% 
+  mutate(Date=as.numeric(iyear+imonth/12)) %>% 
+  group_by(Date,Country) %>% 
+  summarise(fre=n()) %>% 
+  ggplot(aes(x=Date, y=fre,color=Country)) +
+  geom_line(size=0.8) +
+  facet_wrap(~Country,nrow = 5) +
+  scale_x_continuous(limits = c(1970.00,2015.12), breaks = seq(1970,2015,5)) +
+  theme_classic() +
+  labs(title="Time-Series Plot") +
+  xlab("Country") + ylab("Total Terrorism Incident") +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size=8,angle=30),
+        axis.text.y = element_text(size=8),
+        strip.text.x = element_text(size=10,face = "bold"),
+        strip.background = element_rect(colour="white", fill="white"))
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+# hourly data
+```{r}
+RTC <- read.csv("RTC.csv",header = TRUE)
+
+# 1. gather all hours into one column
+GatherRTC <- tidyr::gather(RTC,15:38,key = hour,value = cars)
+
+# 2. TTPS, 2GB data
+Places <- data.frame(
+  PlaceName = c("Surry Hills","Milsons Point",
+                "Rhodes", "Strathfield", "Sydney",
+                "East lakes", "5 Docks", "Homebush West",
+                "Randwick", "Kensington"),
+  Lat = c(-33.88611, -33.847650, -33.828210,
+          -33.880810,-33.868820,-33.925000,
+          -33.865120, -33.863806, -33.916430, 
+          -33.908889),
+  Lon = c(151.211111, 151.212010, 151.085690,
+          151.083080,151.209296,151.213333,
+          151.128560, 151.066462, 151.236530,
+          151.223333))
+
+JitteredPlace <- data.frame(
+  PlaceName = Places$PlaceName,
+  MinLat = Places$Lat - 0.0055,
+  MaxLat = Places$Lat + 0.0055,
+  MinLon = Places$Lon - 0.0055,
+  MaxLon = Places$Lon + 0.0055)
+
+RoughlyFilter <- data.frame(
+  minLat = min(JitteredPlace$MinLat),
+  maxLat = max(JitteredPlace$MaxLat),
+  minLon = min(JitteredPlace$MinLon),
+  maxLon = max(JitteredPlace$MaxLon))
+  
+RoughlyFilteredTTDS <- busspeed %>% 
+  dplyr::filter(Lon <= RoughlyFilter$maxLon & 
+                  Lon >= RoughlyFilter$minLon & 
+                  Lat <= RoughlyFilter$maxLat &
+                  Lat >= RoughlyFilter$minLat)
+
+for(i in 1:10){
+  TTDS[i] <- RoughlyFilteredTTDS[which(
+    RoughlyFilteredTTDS$Lat >= JitteredPlace$MinLat[i]  &
+    RoughlyFilteredTTDS$Lat <=  JitteredPlace$MaxLat[i] &
+    RoughlyFilteredTTDS$Lon >=  JitteredPlace$MinLon[i] &
+    RoughlyFilteredTTDS$Lon <=  JitteredPlace$MaxLon[i])
+    ,]
+}
+
+
+FinalTTDS <- data.frame(
+  PlaceNames = JitteredPlace$PlaceName)
+
+
+for(i in 10){
+  KST <- RoughlyFilteredTTDS %>% 
+    dplyr::filter(
+    RoughlyFilteredTTDS$Lat >= JitteredPlace$MinLat[i]  &
+    RoughlyFilteredTTDS$Lat <=  JitteredPlace$MaxLat[i] &
+    RoughlyFilteredTTDS$Lon >=  JitteredPlace$MinLon[i] &
+    RoughlyFilteredTTDS$Lon <=  JitteredPlace$MaxLon[i])
+}
+
+SH$AreaName <- "Surry Hills"
+MP$AreaName <- "Milsons Point"
+Rhodes$AreaName <- "Rhodes"
+SthFie$AreaName <- "Strathfield"
+Syd$AreaName <- "Sydney"
+EL$AreaName <- "East lakes"
+FiveDocks$AreaName <- "5 Docks"
+HWest$AreaName <- "Homebush West"
+RandWick$AreaName <- "Randwick"
+KST$AreaName <- "Kensington"
+
+TTDS <- rbind(SH,MP)
+TTDS <- rbind(TTDS,Rhodes)
+TTDS <- rbind(TTDS,SthFie)
+TTDS <- rbind(TTDS,Syd)
+TTDS <- rbind(TTDS,EL)
+TTDS <- rbind(TTDS,FiveDocks)
+TTDS <- rbind(TTDS,HWest)
+TTDS <- rbind(TTDS,RandWick)
+TTDS <- rbind(TTDS,KST)
+```
+# GatherRTC
+```{r}
+GatherRTC$hour <- as.integer(sub("Hour.","",x = GatherRTC$hour))
+
+rm <- GatherRTC %>% 
+  dplyr::group_by(hour) %>% 
+  dplyr::summarise(n=n(),x=mean(cars))
+
+rm1 <- ymd_hms(GatherRTC$Date)
+GatherRTC$Year <- format(rm1,"%Y")
+GatherRTC$Month <- format(rm1,"%m")
+GatherRTC$Day <- format(rm1,"%d")
+
+GatherRTC$Year <- as.numeric(GatherRTC$Year)
+GatherRTC$Month <- as.numeric(GatherRTC$Month)
+GatherRTC$Day <- as.numeric(GatherRTC$Day)
+GatherRTC$cars <- as.numeric(GatherRTC$cars)
+GatherRTC <- GatherRTC %>% 
+  dplyr::mutate(SortDate = Year*10000+Month*100+Day) %>% 
+  dplyr::arrange(SortDate)
+
+
+GatherRTC$Wgs84.Latitude <- round(GatherRTC$Wgs84.Latitude,digits = 2)
+
+GatherRTC$Wgs84.Longitude <- round(GatherRTC$Wgs84.Longitude,digits = 2)
+
+# replace missinng values in number of cars by 
+GatherRTC <- GatherRTC %>%
+  dplyr::mutate(cars = ifelse(
+    is.na(cars == TRUE), 
+    sample(max(GatherRTC$cars,na.rm = TRUE),1), 
+    cars))
+
+RegroupedRTC <- GatherRTC %>% 
+  dplyr::group_by(Wgs84.Latitude,Wgs84.Longitude,Road.Name,hour) %>% 
+  dplyr::summarise(Counts=n(),AvgCars=mean(cars))
+
+TTDS$Lat2Digits <- round(TTDS$Lat,digits = 2)
+TTDS$Lon2Digits <- round(TTDS$Lon,digits = 2)
+
+
+left_join()
+
+
+rm <- GatherRTC %>% filter(Suburb %in% c("Surry Hills","Milsons Point",
+                "Rhodes", "Strathfield", "Sydney",
+                "Five Dock", "Homebush West",
+                "Randwick", "Kensington","Eastlakes"))
+
+rm1 <- RegroupedRTC %>% 
+  plyr::rename(c("Wgs84.Latitude"="Lat2Digits","Wgs84.Longitude"="Lon2Digits","hour"="Hour")) 
+
+summary(is.na(rm$Lon2Digits))
+summary(is.na(rm$Lat2Digits))
+
+rm2 <- base::merge(TTDS,rm1,by=c("Lat2Digits","Lon2Digits","Hour"))
+write.csv(rm,"MergedRTCandDDTS.csv")
+
+TTDSModi <- TTDS %>% 
+  dplyr::group_by(Lat,Lon,Hour,Month,AreaName) %>% 
+  dplyr::summarise(Counts=n(),AvgDeg=mean(DEG),
+                   AvgSpeed=mean(Speed),
+                   AvgSpeedLim=mean(SpeedLimit), 
+                   AvgSpeedPercentage=mean(PercentageSpeed))
+TTDSModi$Lat2Digits <- round(TTDSModi$Lat,digits = 2)
+TTDSModi$Lon2Digits <- round(TTDSModi$Lon,digits = 2)
+
+FinalVersionData <- base::merge(
+  TTDSModi,rm1,by=c("Lat2Digits","Lon2Digits","Hour"))
+
+
+write.csv(FinalVersionData,"FinalData.csv")
+
+```
+
+
+
+# Visualizations
+```{r}
+library(dplyr)
+library(ggplot2)
+
+TTDSRTC <- read.csv("FinalData.csv",header = TRUE)
+
+TTDSRTC %>% 
+  ggplot(aes(x=AvgCars,y=AvgSpeed,color=Month)) +
+  geom_point() +
+  facet_wrap(~AreaName,scales = "free",nrow=2) +
+  theme_classic() +
+  labs(title="") + 
+  xlab("") + ylab("") +
+  theme()
+
+TTDSRTC %>% 
+  mutate(Month=as.factor(Month)) %>% 
+  ggplot(aes(x=AvgDeg,y=AvgSpeed,color=Month,alpha=0.2,size=0.2)) +
+  geom_line() +
+  geom_jitter() +
+  facet_wrap(~AreaName,scales = "free",nrow=2) +
+  theme_classic() +
+  labs(title="") + 
+  xlab("") + ylab("") 
+
+TTDSRTC %>% 
+  ggparcoord(columns = c(4,))
+
+
+```
+
+# arrow
+```{r}
+library(shape)
+TTDS <- read.csv("TTDSv2.csv",header = TRUE)
+summary(TTDS$DEG)
+```
+
+
+
+
