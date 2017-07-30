@@ -15,32 +15,30 @@ Encourage changes to the 'future of work'
 
 ## Technical information
 
-The attached folders contain the following:
+The repository contains:
 
--Employment projections by travel zone
+  * Employment projections by travel zone
 
--Population projections by travel zone
+  * Population projections by travel zone
 
--Rstudio code for trend growth predictions
+  * Rstudio code for trend growth predictions
 
--Tableau workbook packages containing traffic and congestion visualisations  
+  * Tableau workbook packages containing traffic and congestion visualisations  
 
+**Programs used:**
 
+  * Tableau 10.3
 
-Programs used:
-
-Tableau 10.3
-
-Rstudio
+  * RStudio
 
 
-Datasets and other relevant information used:
+**Datasets and other relevant information used:**
 
-HERE APIs to extract geocodic information
+  * HERE APIs to extract geocodic information
 
-Open Transport NSW TTDS data
+  * Open Transport NSW TTDS data
 
-http://stat.abs.gov.au/itt/r.jsp?databyregion#/
+  * http://stat.abs.gov.au/itt/r.jsp?databyregion#/
 
 
 
