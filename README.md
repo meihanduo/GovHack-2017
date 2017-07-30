@@ -47,6 +47,12 @@ This repository contains:
   * [Transport for NSW: Employment Projections from its Travel Zone Projection 2016 (TZP2016) model](https://opendata.transport.nsw.gov.au/dataset/employment-projections)
   
   * [Transport for NSW: Opal Tap On and Tap Off data](https://opendata.transport.nsw.gov.au/dataset/opal-tap-on-and-tap-off)
+  
+  * [Forecasts and projections](https://www.transport.nsw.gov.au/performance-and-analytics/forecasts-and-projections/employment/land-use-planner-employment)
+  
+  * [Traffic Volumes for 2016](http://www.rms.nsw.gov.au/about/corporate-publications/statistics/traffic-volumes/aadt-map/index.html#/?z=5)
+  
+  * 
 
 
 
