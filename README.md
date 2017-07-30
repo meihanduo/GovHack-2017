@@ -40,7 +40,7 @@ This repository contains:
 
   * [ABS: Data by Region](http://stat.abs.gov.au/itt/r.jsp?databyregion#/)
   
-  * HERE: APIs to extract geocode information
+  * [HERE: APIs to extract geocode information](https://developer.here.com/rest-apis/documentation/batch-geocoder/topics/request-submit.html)
 
   * [Transport for NSW: Roads Realtime (TTDS)](https://opendata.transport.nsw.gov.au/dataset/roads-realtime)
 
