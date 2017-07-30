@@ -35,6 +35,8 @@ This repository contains:
   * RStudio
   
   * Microsoft Visual Studio Community Edition 2017
+  
+  * Shinyapps.io
 
 **Datasets and other relevant information used:**
 
