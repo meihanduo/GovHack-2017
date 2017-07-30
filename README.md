@@ -4,7 +4,7 @@
 
 **Why would someone want to use this?**
 
-Interventions to reduce traffic volume may focus on increasing the number or sizes of roads, or decreasing the number of cars on the road. This then affects the speed at which traffic moves through an intersection. Our tool visualises the interaction between traffic volume and traffic speed. This should help Transport for NSW to evaluate intervention proposals to reduce traffic, by determining if the speed of traffic would be affected and, if so, by how much.
+Interventions to reduce traffic volume may focus on increasing the number or lanes of roads, or decreasing the number of cars on the road. This then affects the speed at which traffic moves through an intersection. Our tool visualises the interaction between traffic volume and traffic speed. This should help Transport for NSW to evaluate intervention proposals to reduce traffic, by determining if the speed of traffic would be affected and, if so, by how much.
 
 **We want to paint a picture of what congestion looks like now and what it’s going to like in the future, if we keep going the way we are going.**
 
@@ -28,7 +28,7 @@ This repository contains:
 
   * Tableau workbook packages containing traffic and congestion visualisations  
 
-**Programs used:**
+**Technologies used:**
 
   * Tableau 10.3
 
@@ -42,29 +42,14 @@ This repository contains:
 
   * [ABS: Data by Region](http://stat.abs.gov.au/itt/r.jsp?databyregion#/)
   
-  * [HERE: APIs to extract geocode information](https://developer.here.com/rest-apis/documentation/batch-geocoder/topics/request-submit.html)
+  * [HERE: Batch Geocoder API](https://developer.here.com/rest-apis/documentation/batch-geocoder/topics/request-submit.html)
+  
+  * [NSW Roads and Maritime Services: Traffic Volume Viewer](http://www.rms.nsw.gov.au/about/corporate-publications/statistics/traffic-volumes/aadt-map/index.html#/?z=5)
+
+  * [Transport for NSW: Employment Projections from Travel Zone Projection 2016 (TZP2016) model](https://opendata.transport.nsw.gov.au/dataset/employment-projections)
+  
+  * [Transport for NSW: Land Use Planner - Employment](https://www.transport.nsw.gov.au/performance-and-analytics/forecasts-and-projections/employment/land-use-planner-employment)
+    
+  * [Transport for NSW: Opal Tap On and Tap Off data](https://opendata.transport.nsw.gov.au/dataset/opal-tap-on-and-tap-off)
 
   * [Transport for NSW: Roads Realtime (TTDS)](https://opendata.transport.nsw.gov.au/dataset/roads-realtime)
-
-  * [Transport for NSW: Employment Projections from its Travel Zone Projection 2016 (TZP2016) model](https://opendata.transport.nsw.gov.au/dataset/employment-projections)
-  
-  * [Transport for NSW: Opal Tap On and Tap Off data](https://opendata.transport.nsw.gov.au/dataset/opal-tap-on-and-tap-off)
-  
-  * [Forecasts and projections](https://www.transport.nsw.gov.au/performance-and-analytics/forecasts-and-projections/employment/land-use-planner-employment)
-  
-  * [Traffic Volumes for 2016](http://www.rms.nsw.gov.au/about/corporate-publications/statistics/traffic-volumes/aadt-map/index.html#/?z=5)
-  
-  * 
-
-
-
-
-
-
-
-
-
-
-
-
-
