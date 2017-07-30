@@ -1,4 +1,4 @@
-# GovHack-2017 - The BEST (Best Estimate of Sydney Traffic) Team
+# GovHack 2017 - The BEST (Best Estimate of Sydney Traffic) Team
 
 **BEST (Best Estimate of Sydney Traffic) is a visualisation tool that shows the changes in the speed of traffic through a given road intersection in Sydney, as the volume of traffic through that intersection varies. Users can then see how this effect will change over the course of Sydney morning rush hour (7am-10am).**
 
@@ -11,12 +11,14 @@ Interventions to reduce traffic volume may focus on increasing the number or siz
 We then want to paint a picture of what congestion COULD look like if we:
 
   * Invest in infrastructure
+  
   * Invest in public transport
+  
   * Encourage changes to the 'future of work'
 
 ## Technical information
 
-The repository contains:
+This repository contains:
 
   * Employment projections by travel zone
 
@@ -32,18 +34,17 @@ The repository contains:
 
   * RStudio
 
-
 **Datasets and other relevant information used:**
 
-  * HERE APIs to extract geocodic information
-
-  * Open Transport NSW TTDS data
-
-  * http://stat.abs.gov.au/itt/r.jsp?databyregion#/
+  * [ABS: Data by Region](http://stat.abs.gov.au/itt/r.jsp?databyregion#/)
   
-  * https://opendata.transport.nsw.gov.au/dataset/employment-projections
+  * HERE: APIs to extract geocode information
+
+  * [Transport for NSW: Roads Realtime (TTDS)](https://opendata.transport.nsw.gov.au/dataset/roads-realtime)
+
+  * [Transport for NSW: Employment Projections from its Travel Zone Projection 2016 (TZP2016) model](https://opendata.transport.nsw.gov.au/dataset/employment-projections)
   
-  * https://opendata.transport.nsw.gov.au/dataset/opal-tap-on-and-tap-off
+  * [Transport for NSW: Opal Tap On and Tap Off data](https://opendata.transport.nsw.gov.au/dataset/opal-tap-on-and-tap-off)
 
 
 
