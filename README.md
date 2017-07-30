@@ -3,15 +3,16 @@
 **BEST (Best Estimate of Sydney Traffic) is a visualisation tool that shows the changes in the speed of traffic through a given road intersection in Sydney, as the volume of traffic through that intersection varies. Users can then see how this effect will change over the course of Sydney morning rush hour (7am-10am).**
 
 **Why would someone want to use this?**
+
 Interventions to reduce traffic volume may focus on increasing the number or sizes of roads, or decreasing the number of cars on the road. This then affects the speed at which traffic moves through an intersection. Our tool visualises the interaction between traffic volume and traffic speed. This should help Transport for NSW to evaluate intervention proposals to reduce traffic, by determining if the speed of traffic would be affected and, if so, by how much.
 
-**We want to paint a picture of what congestion looks like now and what it’s going to like in the future, if we keep going the way we’re going.**
+**We want to paint a picture of what congestion looks like now and what it’s going to like in the future, if we keep going the way we are going.**
 
 We then want to paint a picture of what congestion COULD look like if we:
 
-Invest in infrastructure
-Invest in public transport
-Encourage changes to the 'future of work'
+  * Invest in infrastructure
+  * Invest in public transport
+  * Encourage changes to the 'future of work'
 
 ## Technical information
 
